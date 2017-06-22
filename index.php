@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><?php echo $config['title'] ?></title>
+  <title><?php echo $config['title']; ?></title>
 
   <!-- Bootstrap Grid -->
   <link rel="stylesheet" type="text/css" href="/media/assets/bootstrap-grid-only/css/grid12.css">
@@ -35,7 +35,7 @@
                 <div class="articles articles__horizontal">
 
                     <?php
-                        $articles = mysqli_query($connection, "SELECT * FROM `articles` ORDER BY `id` DESC LIMIT 10");
+                        $articles = mysqli_query($connection, "SELECT * FROM `articles` ORDER BY `id` DESC LIMIT 6");
                         /*Вывод 10 статей отсортированных - самые новые вначале*/
                     ?>
 
@@ -46,22 +46,24 @@
                     <article class="article">
                     <div class="article__image" style="background-image: url(/static/images/<?php echo $art['image']; ?>);"></div>
                     <div class="article__info">
-                      <a href="/articles.php?id=<?php echo $art['id']; ?>"><?php echo $art['title']; ?></a>
+                      <a href="/article.php?id=<?php echo $art['id']; ?>"><?php echo $art['title']; ?></a>
                       <div class="article__info__meta">
                           <?php
                           $art_cat = false;
-                          foreach ($categories as $cat)
-                          {
-                              if($cat['id'] == $art['categorie_id'])
+                          if (isset($categories)) {
+                              foreach ($categories as $cat)
                               {
-                                  $art_cat = $cat;
-                                  break;
+                                  if($cat['id'] == $art['categorie_id'])
+                                  {
+                                      $art_cat = $cat;
+                                      break;
+                                  }
                               }
                           }
                           ?>
-                        <small>Категория: <a href="/articles.php?categorie=<?php echo $art_cat['id']; ?>"><?php echo $art_cat['title']; ?></a></small>
+                        <small>Категория: <a href="/article.php?categorie=<?php echo $art_cat['id']; ?>"><?php echo $art_cat['title']; ?></a></small>
                       </div>
-                      <div class="article__info__preview"><?php echo mb_substr($art['text'], 0, 50, 'utf-8'); ?></div>
+                      <div class="article__info__preview"><?php echo mb_substr(strip_tags($art['text']), 0, 100, 'utf-8') . ' ...'; ?></div>
                     </div>
                   </article>
                     <?php
@@ -79,7 +81,7 @@
                 <div class="articles articles__horizontal">
 
                     <?php
-                    $articles = mysqli_query($connection, "SELECT * FROM `articles` WHERE `categorie_id` = 7 ORDER BY `id` DESC LIMIT 10");
+                    $articles = mysqli_query($connection, "SELECT * FROM `articles` WHERE `categorie_id` = 7 ORDER BY `id` DESC LIMIT 6");
                     /*Вывод 10 статей отсортированных - самые новые вначале*/
                     ?>
 
@@ -90,7 +92,7 @@
                         <article class="article">
                             <div class="article__image" style="background-image: url(/static/images/<?php echo $art['image']; ?>);"></div>
                             <div class="article__info">
-                                <a href="/articles.php?id=<?php echo $art['id']; ?>"><?php echo $art['title']; ?></a>
+                                <a href="/article.php?id=<?php echo $art['id']; ?>"><?php echo $art['title']; ?></a>
                                 <div class="article__info__meta">
                                     <?php
                                     $art_cat = false;
@@ -103,9 +105,9 @@
                                         }
                                     }
                                     ?>
-                                    <small>Категория: <a href="/articles.php?categorie=<?php echo $art_cat['id']; ?>"><?php echo $art_cat['title']; ?></a></small>
+                                    <small>Категория: <a href="/article.php?categorie=<?php echo $art_cat['id']; ?>"><?php echo $art_cat['title']; ?></a></small>
                                 </div>
-                                <div class="article__info__preview"><?php echo mb_substr($art['text'], 0, 50, 'utf-8'); ?></div>
+                                <div class="article__info__preview"><?php echo mb_substr(strip_tags($art['text']), 0, 100, 'utf-8') . ' ...'; ?></div>
                             </div>
                         </article>
                         <?php
@@ -123,7 +125,7 @@
                 <div class="articles articles__horizontal">
 
                     <?php
-                    $articles = mysqli_query($connection, "SELECT * FROM `articles` WHERE `categorie_id` = 4 ORDER BY `id` DESC LIMIT 10");
+                    $articles = mysqli_query($connection, "SELECT * FROM `articles` WHERE `categorie_id` = 4 ORDER BY `id` DESC LIMIT 6");
                     /*Вывод 10 статей отсортированных - самые новые вначале*/
                     ?>
 
@@ -134,7 +136,7 @@
                         <article class="article">
                             <div class="article__image" style="background-image: url(/static/images/<?php echo $art['image']; ?>);"></div>
                             <div class="article__info">
-                                <a href="/articles.php?id=<?php echo $art['id']; ?>"><?php echo $art['title']; ?></a>
+                                <a href="/article.php?id=<?php echo $art['id']; ?>"><?php echo $art['title']; ?></a>
                                 <div class="article__info__meta">
                                     <?php
                                     $art_cat = false;
@@ -147,9 +149,9 @@
                                         }
                                     }
                                     ?>
-                                    <small>Категория: <a href="/articles.php?categorie=<?php echo $art_cat['id']; ?>"><?php echo $art_cat['title']; ?></a></small>
+                                    <small>Категория: <a href="/article.php?categorie=<?php echo $art_cat['id']; ?>"><?php echo $art_cat['title']; ?></a></small>
                                 </div>
-                                <div class="article__info__preview"><?php echo mb_substr($art['text'], 0, 50, 'utf-8'); ?></div>
+                                <div class="article__info__preview"><?php echo mb_substr(strip_tags($art['text']), 0, 100, 'utf-8') . ' ...'; ?></div>
                             </div>
                         </article>
                         <?php

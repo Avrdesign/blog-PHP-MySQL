@@ -5,7 +5,7 @@ require "../includes/config.php";
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Блог IT_Минималиста!</title>
+    <title><?php echo $config['title']; ?></title>
 
     <!-- Bootstrap Grid -->
     <link rel="stylesheet" type="text/css" href="/media/assets/bootstrap-grid-only/css/grid12.css">
