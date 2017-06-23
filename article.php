@@ -43,7 +43,6 @@ require "includes/config.php";
                                 </div>
                             </div>
                         </div>
-
                     </section>
                     <section class="content__right col-md-4">
                         <?php include 'includes/sidebar.php' ?>
@@ -64,6 +63,22 @@ require "includes/config.php";
                         <div class="block">
                             <a><?php echo $art['views']; ?> просмотров</a>
                             <h3><?php echo $art['title']; ?></h3>
+                            <div class="article__cat">
+                                <?php
+                                $art_cat = false;
+                                if (isset($categories)) {
+                                    foreach ($categories as $cat)
+                                    {
+                                        if($cat['id'] == $art['categorie_id'])
+                                        {
+                                            $art_cat = $cat;
+                                            break;
+                                        }
+                                    }
+                                }
+                                ?>
+                                <small>Категория: <a href="/articles.php?categorie=<?php echo $art_cat['id']; ?>"><?php echo $art_cat['title']; ?></a></small>
+                            </div>
                             <div class="block__content">
                                 <img src="/static/images/<?php echo $art['image']; ?>" style="max-width: 100%">
                                 <div class="full-text">

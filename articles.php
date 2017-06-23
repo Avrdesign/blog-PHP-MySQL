@@ -37,13 +37,19 @@
                         $per_page = 4; //количество статей на странице (LIMIT)
                         $page = 1; //номер страницы 1- по умолчанию
                         $offset = 0; // Сдвиг - 1-й аргумент для оператора - ...ORDER BY `id` DESC LIMIT ...
-                        if ( isset($_GET['page'])) {
+                    if ( isset($_GET['page'])) {
                             $page = (int) $_GET['page'];
                         }
-
+                    if ( isset($_GET['categorie'])) {
+                        $categorie = (int) $_GET['categorie'];
+                        $total_count_q = mysqli_query($connection, "SELECT COUNT(`id`) AS `total_count` FROM `articles` WHERE `categorie_id`= $categorie");
+                        $total_count = mysqli_fetch_assoc($total_count_q);
+                        $total_count = $total_count['total_count']; //кол-во статей в базе
+                    } else {
                         $total_count_q = mysqli_query($connection, "SELECT COUNT(`id`) AS `total_count` FROM `articles`");
                         $total_count = mysqli_fetch_assoc($total_count_q);
                         $total_count = $total_count['total_count']; //кол-во статей в базе
+                    }
 
 
                     $total_pages = ceil($total_count / $per_page); //общее кол-во страниц в пагинации
@@ -56,9 +62,16 @@
                     // 4 = 4 * 2 - 4
                     // 8 = 4 * 3 - 4
 
-                        $articles = mysqli_query($connection, "SELECT * FROM `articles` ORDER BY `id` DESC LIMIT $offset, $per_page");
-                        /*Вывод статей отсортированных - самые новые вначале*/
 
+                    if ( isset($_GET['categorie'])) {
+                        $categorie = (int) $_GET['categorie'];
+                        $articles = mysqli_query($connection, "SELECT * FROM `articles` WHERE `categorie_id`= $categorie ORDER BY `id` DESC LIMIT $offset, $per_page");
+                        /*Вывод статей определенной категории отсортированных - самые новые вначале*/
+
+                    } else {
+                        $articles = mysqli_query($connection, "SELECT * FROM `articles` ORDER BY `id` DESC LIMIT $offset, $per_page");
+                        /*Вывод ВСЕХ статей отсортированных - самые новые вначале*/
+                    }
                     $articles_exist = true; //Ключ существования статей
                     if( mysqli_num_rows($articles) <= 0)
                     {
@@ -87,7 +100,7 @@
                               }
                           }
                           ?>
-                        <small>Категория: <a href="/article.php?categorie=<?php echo $art_cat['id']; ?>"><?php echo $art_cat['title']; ?></a></small>
+                        <small>Категория: <a href="/articles.php?categorie=<?php echo $art_cat['id']; ?>"><?php echo $art_cat['title']; ?></a></small>
                       </div>
                       <div class="article__info__preview"><?php echo mb_substr(strip_tags($art['text']), 0, 100, 'utf-8') . ' ...'; ?></div>
                     </div>
@@ -102,10 +115,10 @@
                   {
                       echo '<div class="paginator">';
                       if ($page > 1) {
-                          echo '<a href="/articles.php?page=' . ($page - 1) .'">&laquo Прошлая страница </a>';
+                          echo '<span class="article__cat"><a href="/articles.php?page=' . ($page - 1) .'">&laquo Предыдущая страница || </a> </span>';
                       }
                       if ($page < $total_pages) {
-                          echo '<a href="/articles.php?page=' . ($page + 1) .'">Следующая страница &raquo</a>';
+                          echo '<span class="article__cat"> <a href="/articles.php?page=' . ($page + 1) .'">Следующая страница &raquo</a> </span>';
                       }
                       echo '</div>';
                   }
@@ -113,9 +126,6 @@
 
               </div>
             </div>
-
-              <!--TODO  сделать, чтобы при передаче аргумента категории /articles.php?page=1&categorie=4  выводились только статьи категории-->
-              <!--TODO  сделать админку для добавления статей-->
 
 
 
