@@ -92,6 +92,30 @@ require "includes/config.php";
                             <div class="block__content">
                                 <div class="articles articles__vertical">
 
+                                    <?php //Обработчик формы в этом же файле
+
+                                    if ( isset($_POST['do_post'])){
+                                        $errors = array();
+
+
+                                        if ($_POST['name'] == '') {$errors[] = 'Введите имя';}
+                                        if ($_POST['nickname'] == '') {$errors[] = 'Введите никнейм';}
+                                        if ($_POST['email'] == '') {$errors[] = 'Введите Email';}
+                                        if ($_POST['text'] == '') {$errors[] = 'Введите текст комментария';}
+
+                                        if (empty($errors))
+                                        {
+                                            //Добавить комментарий в базу данных
+
+                                            mysqli_query($connection, "INSERT INTO `comments` (`author`, `nickname`, `email`, `text`, `pubdate`, `articles_id`) VALUES ('".$_POST['name']."', '".$_POST['nickname']."', '".$_POST['email']."', '".$_POST['text']."', NOW(), '".$art['id']."')");
+
+                                         }
+
+                                    }
+
+
+                                    ?>
+
                                     <?php
                                     $comments = mysqli_query($connection, "SELECT * FROM `comments` WHERE `articles_id` = " . (int)$art['id'] . " ORDER BY `id` DESC");
                                     /*Вывод последних отзывов к статье - самые новые вначале*/
@@ -123,20 +147,9 @@ require "includes/config.php";
                                 <form class="form" method="POST" action="/article.php?id=<?php echo $art['id'];?>#comment-add-form">
                                     <?php //Обработчик формы в этом же файле
 
-                                    if ( isset($_POST['do_post'])){
-                                        $errors = array();
-
-
-                                        if ($_POST['name'] == '') {$errors[] = 'Введите имя';}
-                                        if ($_POST['nickname'] == '') {$errors[] = 'Введите никнейм';}
-                                        if ($_POST['email'] == '') {$errors[] = 'Введите Email';}
-                                        if ($_POST['text'] == '') {$errors[] = 'Введите текст комментария';}
-
-                                        if (empty($errors))
-                                        {
-                                            //Добавить комментарий
-
-                                            mysqli_query($connection, "INSERT INTO `comments` (`author`, `nickname`, `email`, `text`, `pubdate`, `articles_id`) VALUES ('".$_POST['name']."', '".$_POST['nickname']."', '".$_POST['email']."', '".$_POST['text']."', NOW(), '".$art['id']."')");
+                                    if ( isset($_POST['do_post'])) {
+                                        if (empty($errors)) {
+                                            //Вывесит успешное сообщение
 
                                             echo '<span style="color: #0cad07; font-weight: bold; margin-bottom: 10px; display: block;">' . 'Комментарий успешно добавлен' . '</span>';
                                         } else {
@@ -144,29 +157,26 @@ require "includes/config.php";
                                             // foreach ($errors as $err) echo $err;
                                             echo '<span style="color: red; font-weight: bold; margin-bottom: 10px; display: block;">' . $errors['0'] . '</span>';
                                         }
-
                                     }
 
-                                    //TODO проблема с комментариями, если оставлять заполнение формы, типа value="<?php echo $_POST['name'];... . Возможно это проблема WAMP
-                                    //TODO коментарий не появляется на странице сразу, а при обновлении дублируется в базе. Найти решение.
 
                                     ?>
                                     <div class="form__group">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <input type="text" class="form__control" name="name" placeholder="Имя" > <!-- value="<?php echo $_POST['name']; ?>" -->
+                                                <input type="text" class="form__control" name="name" placeholder="Имя" value="<?php echo $_POST['name']; ?>"> <!-- value="<?php echo $_POST['name']; ?>" -->
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="text" class="form__control" name="nickname"  placeholder="Никнейм" > <!-- value="<?php echo $_POST['nickname']; ?>"-->
+                                                <input type="text" class="form__control" name="nickname"  placeholder="Никнейм" value="<?php echo $_POST['nickname']; ?>"> <!-- value="<?php echo $_POST['nickname']; ?>"-->
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="text" class="form__control" name="email"  placeholder="Email (не будет показан)" > <!-- value="<?php echo $_POST['email']; ?>"-->
+                                                <input type="text" class="form__control" name="email"  placeholder="Email (не будет показан)" value="<?php echo $_POST['email']; ?>"> <!-- value="<?php echo $_POST['email']; ?>"-->
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form__group">
                                         <textarea name="text" class="form__control"
-                                                  placeholder="Текст комментария ..."></textarea> <!-- <?php echo $_POST['text']; ?> -->
+                                                  placeholder="Текст комментария ..."><?php echo $_POST['text']; ?></textarea> <!-- <?php echo $_POST['text']; ?> -->
                                     </div>
                                     <div class="form__group">
                                         <input type="submit" class="form__control" name="do_post"
