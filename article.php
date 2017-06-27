@@ -164,19 +164,19 @@ require "includes/config.php";
                                     <div class="form__group">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <input type="text" class="form__control" name="name" placeholder="Имя" value="<?php echo $_POST['name']; ?>"> <!-- value="<?php echo $_POST['name']; ?>" -->
+                                                <input type="text" class="form__control" name="name" placeholder="Имя" value="<?php echo @$_POST['name']; ?>"> <!-- @ служит для отключения ошибки, если такая возникнет-->
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="text" class="form__control" name="nickname"  placeholder="Никнейм" value="<?php echo $_POST['nickname']; ?>"> <!-- value="<?php echo $_POST['nickname']; ?>"-->
+                                                <input type="text" class="form__control" name="nickname"  placeholder="Никнейм" value="<?php echo @$_POST['nickname']; ?>">
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="text" class="form__control" name="email"  placeholder="Email (не будет показан)" value="<?php echo $_POST['email']; ?>"> <!-- value="<?php echo $_POST['email']; ?>"-->
+                                                <input type="text" class="form__control" name="email"  placeholder="Email (не будет показан)" value="<?php echo @$_POST['email']; ?>">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form__group">
                                         <textarea name="text" class="form__control"
-                                                  placeholder="Текст комментария ..."><?php echo $_POST['text']; ?></textarea> <!-- <?php echo $_POST['text']; ?> -->
+                                                  placeholder="Текст комментария ..."><?php echo @$_POST['text']; ?></textarea>
                                     </div>
                                     <div class="form__group">
                                         <input type="submit" class="form__control" name="do_post"

@@ -59,7 +59,7 @@ require "includes/config.php";
                                     <div class="form__group">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <input type="text" class="form__control" name="title" placeholder="Название статьи" > <!-- value="<?php echo $_POST['title']; ?>" -->
+                                                <input type="text" class="form__control" name="title" placeholder="Название статьи" value="<?php echo @$_POST['title']; ?>">
                                             </div>
                                             <div class="col-md-3">
                                               <p>Выберите категорию</p>
@@ -81,14 +81,14 @@ require "includes/config.php";
                                             </div>
                                             <div class="col-md-3">
                                                 <p>Загрузите изображение</p>
-                                                <input type="file" class="form__control" name="image" title="Загрузите изображение"> <!-- value="<?php echo $_POST['image']; ?>"-->
+                                                <input type="file" class="form__control" name="image" title="Загрузите изображение">
                                             </div>
 
                                         </div>
                                     </div>
                                     <div class="form__group">
                                         <textarea name="text" class="form__control"
-                                                  placeholder="Текст статьи ..."></textarea> <!-- <?php echo $_POST['text']; ?> -->
+                                                  placeholder="Текст статьи ..."><?php echo @$_POST['text']; ?></textarea>
                                     </div>
                                     <div class="form__group">
                                         <input type="submit" class="form__control" name="do_post"
